@@ -10,14 +10,14 @@ button,select{font:inherit;padding:9px 12px;border:1px solid #ccc;border-radius:
 #yearRange{flex:1;min-width:180px}.year{font-size:22px;font-weight:700;min-width:58px;text-align:center}
 .viewer,.swipe{position:relative;aspect-ratio:1;overflow:hidden;background:#bbb;border:1px solid #ccc;border-radius:10px;touch-action:none}
 .stage{position:absolute;inset:0;transform-origin:center}.stage img,.swipe>img,.swipeTop img,.cmp img{width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
-.x{position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);opacity:.72;z-index:8;pointer-events:none}
+.x{position:absolute;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%);opacity:.42;z-index:8;pointer-events:none}
 .x:before,.x:after{content:"";position:absolute;left:7px;width:2px;height:16px;background:#d00000;box-shadow:0 0 2px #fff}.x:before{transform:rotate(45deg)}.x:after{transform:rotate(-45deg)}
 .zoom{position:absolute;right:10px;top:10px;z-index:10;display:grid;gap:5px}.zoom button{width:44px;height:44px;font-size:22px;padding:0}
 .status{position:absolute;left:10px;bottom:10px;background:#000b;color:#fff;padding:5px 8px;border-radius:5px;z-index:10}
 .mode{display:none}.mode.active{display:block}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cmp{background:#fff;padding:10px;border-radius:9px}.cmp select{width:100%;margin-bottom:8px}.cmp div{position:relative;aspect-ratio:1;background:#bbb}
 .swipe>img{position:absolute;inset:0}.swipeTop{position:absolute;inset:0;width:50%;overflow:hidden}.swipeTop img{width:100vw;max-width:none;object-position:left center}
 .line{position:absolute;top:0;bottom:0;left:50%;width:3px;background:white;box-shadow:0 0 3px #000;z-index:7}#swipeRange{width:100%;margin:10px 0}
-.note{font-size:13px;color:#666}@media(max-width:700px){.compare{grid-template-columns:1fr}.x{width:12px;height:12px;opacity:.65}.x:before,.x:after{left:5px;width:2px;height:12px}}
+.note{font-size:13px;color:#666}@media(max-width:700px){.compare{grid-template-columns:1fr}.x{width:7px;height:7px;opacity:.38}.x:before,.x:after{left:3px;width:1px;height:7px}}
 </style></head><body>
 <header><h1>2106 Ransom Place — Historic Aerial Explorer</h1><p>Urbana, Illinois · 1936–1973 · one-square-mile frames</p><p>The red X marks 2106 Ransom Place / Lot 54.</p>
 <div class="loadbox" id="loadbox"><span id="loadtext">Loading aerials… 0/7</span><div class="bar"><div id="bar"></div></div></div></header>
