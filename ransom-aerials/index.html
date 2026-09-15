@@ -1,99 +1,42 @@
-<!doctype html><html><head><meta charset="utf-8">
-<title>2106 Ransom — one-square-mile aerials with location marker</title>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2106 Ransom Place — Historic Aerial Explorer</title>
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f4f4;margin:0}
-header,main{max-width:1250px;margin:auto;padding:24px}
-main{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:22px}
-section{background:#fff;padding:15px;border-radius:10px} 
-.image-wrap{position:relative;width:100%;aspect-ratio:1;background:#ddd;overflow:hidden}
-img{width:100%;height:100%;object-fit:contain;display:block}
-h2{margin-top:0} p{font-size:13px}
-.xmark{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%);pointer-events:none}
-.xmark span{position:absolute;left:14px;top:0;width:3px;height:30px;background:#e00000;box-shadow:0 0 2px white}
-.xmark span:first-child{transform:rotate(45deg)}
-.xmark span:last-child{transform:rotate(-45deg)}
+*{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f3f3f3;color:#111}
+header,.app{max-width:1250px;margin:auto;padding:18px}h1{margin:0 0 6px}header p{margin:4px 0;color:#666}
+.tabs,.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button,select{font:inherit;padding:9px 12px;border:1px solid #ccc;border-radius:7px;background:#fff}button{cursor:pointer}button.active{background:#222;color:#fff}
+#yearRange{flex:1;min-width:180px}.year{font-size:22px;font-weight:700;min-width:58px;text-align:center}
+.viewer,.swipe{position:relative;aspect-ratio:1;overflow:hidden;background:#bbb;border:1px solid #ccc;border-radius:10px;touch-action:none}
+.stage{position:absolute;inset:0;transform-origin:center}.stage img,.swipe>img,.swipeTop img,.cmp img{width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.x{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%);z-index:8;pointer-events:none}
+.x:before,.x:after{content:"";position:absolute;left:14px;width:3px;height:30px;background:#e00000;box-shadow:0 0 2px #fff}.x:before{transform:rotate(45deg)}.x:after{transform:rotate(-45deg)}
+.zoom{position:absolute;right:10px;top:10px;z-index:10;display:grid;gap:5px}.zoom button{width:44px;height:44px;font-size:22px;padding:0}
+.status{position:absolute;left:10px;bottom:10px;background:#000b;color:#fff;padding:5px 8px;border-radius:5px;z-index:10}
+.mode{display:none}.mode.active{display:block}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cmp{background:#fff;padding:10px;border-radius:9px}.cmp select{width:100%;margin-bottom:8px}.cmp div{position:relative;aspect-ratio:1;background:#bbb}
+.swipe>img{position:absolute;inset:0}.swipeTop{position:absolute;inset:0;width:50%;overflow:hidden}.swipeTop img{width:100vw;max-width:none;object-position:left center}
+.line{position:absolute;top:0;bottom:0;left:50%;width:3px;background:white;box-shadow:0 0 3px #000;z-index:7}#swipeRange{width:100%;margin:10px 0}
+.note{font-size:13px;color:#666}@media(max-width:700px){.compare{grid-template-columns:1fr}}
 </style></head><body>
-<header><h1>2106 Ransom Place / Lot 54 — one-square-mile historic aerials</h1>
-<p>Each frame is 5,280 ft × 5,280 ft and centered on Lot 54 / 2106 Ransom. The <strong>red X marks the geocoded location of 2106 Ransom Place</strong> in every frame.</p>
-</header>
-<main>
-<section>
-<h2>1936</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1936/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1936 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
+<header><h1>2106 Ransom Place — Historic Aerial Explorer</h1><p>Urbana, Illinois · 1936–1973 · one-square-mile frames</p><p>The red X marks 2106 Ransom Place / Lot 54. Imagery loads live from Champaign County GIS.</p></header>
+<div class="app">
+<div class="tabs"><button id="t1" class="active">Year explorer</button><button id="t2">Side by side</button><button id="t3">Before / after</button></div>
+<section id="m1" class="mode active"><div class="controls"><button id="prev">← Previous</button><span id="yl" class="year"></span><button id="next">Next →</button><input id="yearRange" type="range" min="0" max="6" value="0"><button id="reset">Reset zoom</button></div>
+<div id="viewer" class="viewer"><div id="stage" class="stage"><img id="main"><div class="x"></div></div><div class="zoom"><button id="zin">+</button><button id="zout">−</button></div><div id="zs" class="status">100%</div></div>
+<p class="note">Zoom with +/− or the mouse wheel/trackpad. Drag to pan when zoomed. Double-click to reset.</p></section>
+<section id="m2" class="mode"><div class="compare"><div class="cmp"><select id="la"></select><div><img id="li"><div class="x"></div></div></div><div class="cmp"><select id="ra"></select><div><img id="ri"><div class="x"></div></div></div></div></section>
+<section id="m3" class="mode"><div class="controls"><label>Earlier <select id="sa"></select></label><label>Later <select id="sb"></select></label></div><div class="swipe"><img id="bottom"><div id="top" class="swipeTop"><img id="topimg"></div><div id="line" class="line"></div><div class="x"></div></div><input id="swipeRange" type="range" min="0" max="100" value="50"><p class="note">Move the slider to reveal the later image beneath the earlier image.</p></section>
 </div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1936/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1936 source PNG</a></p>
-</section>
-
-<section>
-<h2>1940</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1940/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1940 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1940/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1940 source PNG</a></p>
-</section>
-
-<section>
-<h2>1948</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1948/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1948 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1948/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1948 source PNG</a></p>
-</section>
-
-<section>
-<h2>1955</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1955/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1955 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1955/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1955 source PNG</a></p>
-</section>
-
-<section>
-<h2>1958</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1958/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1958 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1958/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1958 source PNG</a></p>
-</section>
-
-<section>
-<h2>1960</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1960/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1960 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1960/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1960 source PNG</a></p>
-</section>
-
-<section>
-<h2>1967</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1967/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1967 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1967/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1967 source PNG</a></p>
-</section>
-
-<section>
-<h2>1969</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1969/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1969 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1969/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1969 source PNG</a></p>
-</section>
-
-<section>
-<h2>1973</h2>
-<div class="image-wrap">
-  <img src="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1973/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" alt="1973 aerial">
-  <div class="xmark" aria-label="54 Ransom location"><span></span><span></span></div>
-</div>
-<p><a href="https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1973/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image" target="_blank">Open unmarked 1973 source PNG</a></p>
-</section></main></body></html>
+<script>
+const years=[1936, 1940, 1948, 1955, 1960, 1969, 1973], urls={"1936": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1936/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1940": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1940/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1948": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1948/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1955": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1955/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1960": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1960/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1969": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1969/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image", "1973": "https://gisportal.champaignil.gov/is/rest/services/Aerial_Imagery/COC1973/ImageServer/exportImage?bbox=1017045.26417,1260027.00151,1022325.26417,1265307.00151&bboxSR=3435&imageSR=3435&size=2500,2500&format=png&f=image"};
+const $=x=>document.getElementById(x);let i=0,s=1,tx=0,ty=0,drag=false,dx=0,dy=0;
+function apply(){$("stage").style.transform=`translate(${tx}px,${ty}px) scale(${s})`;$("zs").textContent=Math.round(s*100)+"%"}
+function reset(){s=1;tx=ty=0;apply()}function setYear(n){i=Math.max(0,Math.min(years.length-1,n));let y=years[i];$("yl").textContent=y;$("yearRange").value=i;$("main").src=urls[y];$("prev").disabled=i==0;$("next").disabled=i==years.length-1;reset()}
+function zoom(f){s=Math.max(1,Math.min(6,s*f));if(s==1)tx=ty=0;apply()}
+$("prev").onclick=()=>setYear(i-1);$("next").onclick=()=>setYear(i+1);$("yearRange").oninput=e=>setYear(+e.target.value);$("zin").onclick=()=>zoom(1.3);$("zout").onclick=()=>zoom(1/1.3);$("reset").onclick=reset;
+$("viewer").onwheel=e=>{e.preventDefault();zoom(e.deltaY<0?1.15:1/1.15)};$("viewer").ondblclick=reset;
+$("viewer").onpointerdown=e=>{if(s<=1)return;drag=true;dx=e.clientX-tx;dy=e.clientY-ty;$("viewer").setPointerCapture(e.pointerId)};$("viewer").onpointermove=e=>{if(drag){tx=e.clientX-dx;ty=e.clientY-dy;apply()}};$("viewer").onpointerup=()=>drag=false;
+function fill(el,sel){years.forEach(y=>{let o=new Option(y,y,y==sel,y==sel);el.add(o)})}fill($("la"),years[0]);fill($("ra"),years.at(-1));fill($("sa"),years[0]);fill($("sb"),years.at(-1));
+function side(){$("li").src=urls[$("la").value];$("ri").src=urls[$("ra").value]}$("la").onchange=side;$("ra").onchange=side;side();
+function sw(){$("topimg").src=urls[$("sa").value];$("bottom").src=urls[$("sb").value]}$("sa").onchange=sw;$("sb").onchange=sw;sw();$("swipeRange").oninput=e=>{$("top").style.width=e.target.value+"%";$("line").style.left=e.target.value+"%"};
+function tab(n){[1,2,3].forEach(k=>{$("m"+k).classList.toggle("active",k==n);$("t"+k).classList.toggle("active",k==n)})}$("t1").onclick=()=>tab(1);$("t2").onclick=()=>tab(2);$("t3").onclick=()=>tab(3);setYear(0);
+</script></body></html>
